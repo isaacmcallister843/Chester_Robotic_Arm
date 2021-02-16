@@ -15,7 +15,7 @@ The chess AI is in the early stages of development, UI elements are done and pyg
 This project will allow 
 - Easy to use routine setup. Easy control over all motor positions and movement - Complete
 - Geospatial system to keep track to gripper location - Complete
-- Safety thresholds to ensure stabilit - In progress, mostly complete 
+- Safety thresholds to ensure stability - In progress, mostly complete 
 - Sonar sensor support to measure distance - In progress 
 - Chess AI support - In progress
 
