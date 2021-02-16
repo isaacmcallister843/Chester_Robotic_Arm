@@ -14,6 +14,7 @@ The chess AI is in the early stages of development, UI elements are done and pyg
 ## Features 
 This project will allow 
 - Easy to use routine setup. Easy control over all motor positions and movement - Complete
+- Gripper support allowing the arm to hold and move objects - Complete
 - Geospatial system to keep track to gripper location - Complete
 - Safety thresholds to ensure stability - In progress, mostly complete 
 - Sonar sensor support to measure distance - In progress 
@@ -26,7 +27,7 @@ All features are supported through the class; Chester. Chester takes one input a
 board = pyfirmata.Arduino('COM3')
 Chester = Chester(board)
 ```
-Once connected to the arduino commands can be sent to the arm. First the arm needs to be initiazed and set to its neutral position, all angles are measured from this location. 
+Once connected to the arduino commands can be sent to the arm. First the arm needs to be initialized and set to its neutral position, all angles are measured from this location. 
 
 ```Python
 Chester.initialize()
