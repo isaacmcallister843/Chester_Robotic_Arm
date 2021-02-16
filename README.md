@@ -13,7 +13,7 @@ The chess AI is in the early stages of development, UI elements are done and pyg
 
 ## Features 
 This project will allow 
-- Easy to use routine setup. Easy control over all motor positions and movement - Complete
+- Easy to use routine setup. User friendly control over all motor positions and movement - Complete
 - Gripper support allowing the arm to hold and move objects - Complete
 - Geospatial system to keep track to gripper location - Complete
 - Safety thresholds to ensure stability - In progress, mostly complete 
