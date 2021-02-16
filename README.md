@@ -1,15 +1,15 @@
 # Chester (Robotic Arm) 
 
 ## Motivation
-Currently developing a robotic arm control system in Python. Chester_main uses pyfirmata to communicate with an arduino micro controller and send commands to various servo motors. Final program will allow the robot to play a game of chess against a human opponent. 
+Currently developing a robotic arm control system in Python. Chester_main uses pyfirmata to communicate with an arduino micro controller and sends commands to various servo motors. Final program will allow the robot to play a game of chess against a human opponent. 
 
 ## Build Status
-Basic robotic control systems are complete and most of my work is involves fine tuning the motor controls. Current to-do: 
+Basic robotic control systems are complete and most of my work involves fine tuning the motor controls. Current to-do: 
 - Fine tune motor control systems 
 - Add connection to sonar distance sensor
 - Add angle thresholds for safety (stop the arm from knocking itself over) 
 
-The chess AI is in the early stages of development, UI elements are done and pygame interface is mainly complete. I did want to arm to be able to map out the location of various pieces on the chess board using the sonar sensor, however the sensor is probably not accurate enough. A small LIDAR sensor might be better. 
+The chess AI is in the early stages of development, UI elements are done and pygame interface is mainly complete. I did want the arm to be able to map out the location of various pieces on the chess board using the sonar sensor, however the sensor is probably not accurate enough. A small LIDAR sensor might be better. 
 
 ## Features 
 This project will allow 
@@ -21,7 +21,7 @@ This project will allow
 - Chess AI support - In progress
 
 ## Code Examples 
-All features are supported through the class; Chester. Chester takes one input argument "board," taken from pyfirmata library. 
+All features are supported through the 
 
 ```Python
 board = pyfirmata.Arduino('COM3')
