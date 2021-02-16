@@ -51,4 +51,11 @@ Chester.see()
 ## Installation
 Long term goals for this project include making a simple API for motor control, which will be released as a python package. 
 
+## Intellectual Property
+Chester_main was created by my team and all work is original. The Chess AI is being developed with the help of various online tutorials and guides and most of the current posted work is a variation on other publically available projects. 
+
+
+
+
+
 
