@@ -49,6 +49,6 @@ Future implementation for the sonar sensors will include the method "see"
 Chester.see()
 ```
 ## Installation
-Long term goals for this project include making a simple API for motor control, which will be realised as a python package. 
+Long term goals for this project include making a simple API for motor control, which will be released as a python package. 
 
 
