@@ -21,7 +21,7 @@ This project will allow
 - Chess AI support - In progress
 
 ## Code Examples 
-All features are supported through the 
+All features are supported through the object Chester which takes one input "board" 
 
 ```Python
 board = pyfirmata.Arduino('COM3')
