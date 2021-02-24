@@ -9,7 +9,7 @@ Basic robotic control systems are complete and most of my work involves fine tun
 - Add connection to sonar distance sensor
 - Add angle thresholds for safety (stop the arm from knocking itself over) 
 
-The chess AI is in the early stages of development, UI elements are done and pygame interface is mainly complete. I did want the arm to be able to map out the location of various pieces on the chess board using the sonar sensor, however the sensor is probably not accurate enough. A small LIDAR sensor might be better. 
+The chess AI is in the early stages of development, UI elements are done and pygame interface is mainly complete. This project will be documented in its own respository. I did want the arm to be able to map out the location of various pieces on the chess board using the sonar sensor, however the sensor is probably not accurate enough. A small LIDAR sensor might be better. 
 
 ## Features 
 This project will allow 
