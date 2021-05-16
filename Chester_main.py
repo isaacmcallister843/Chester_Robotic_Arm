@@ -1,15 +1,11 @@
+# ----------------- Libraries
 import pyfirmata
 import serial.tools.list_ports
 import sys
 import time
-import serial
+import pycom
 import numpy as np
-# def connections(self):
-#     list = serial.tools.list_ports.comports()
-#     connected = []
-#     for element in list:
-#     connected.append(element.device)
-#     print("Connected COM ports: " + str(connected))
+
 # ----------------- Initial Terms
 Servo_inner = 7
 Servo_bottom = 6
@@ -17,28 +13,45 @@ Servo_top = 5
 small_servo_arm_3 = 3
 small_servo_top = 2
 small_servo_gripper = 8
-theta_1_init = 110
+
+echo_pin = 13
+trig_pin = 12
+
+theta_1_init = 140
 theta_2_init = 90
 theta_0_init = 0
 theta_arm_3 = 30
 
-#arm_1_length =
-#arm_2_length =
-#arm_3_length =
 # --------- Chester
+"""
+Object Chester:
+Holds all control systems and commands 
 
+"""
 
 class Chester:
+
     def __init__(self, board):
         self.board = board
         self.control_array = np.array([[Servo_inner,0],[Servo_top,0],[Servo_bottom,0],[small_servo_arm_3,0],
                                   [small_servo_top,0],[small_servo_gripper,0]],dtype=np.int)
 
     def setServoAngle(self, pin, angle):
+        """
+        :param pin: pin wanting to write too
+        :param angle: angle wanting to write
+        :return: void
+        """
         board.digital[pin].write(angle)
         time.sleep(0.0015)
 
     def set_angle(self, pin, angle_s, update=True):
+        """
+        :param pin: pin wanting to write too
+        :param angle_s: angle wanting to write shifted into new coordinate system
+        :param update: bool value determine whether to update the control array with the new angle
+        :return: void
+        """
         if pin == Servo_bottom:
             if (angle_s > 90):
                 angle_s = 90
@@ -66,63 +79,86 @@ class Chester:
             rows, cols = np.where(self.control_array == pin)
             self.control_array[rows] = np.array([pin, angle_s])
 
-    def initialize(self):
-            time.sleep(5)
-            board.digital[Servo_inner].mode = pyfirmata.SERVO
-            board.digital[Servo_bottom].mode = pyfirmata.SERVO
-            board.digital[Servo_top].mode = pyfirmata.SERVO
-            board.digital[small_servo_gripper].mode = pyfirmata.SERVO
-            board.digital[small_servo_arm_3].mode = pyfirmata.SERVO
-            board.digital[small_servo_top].mode = pyfirmata.SERVO
-
-            self.control_array = np.array([[Servo_inner,0],[Servo_top,0],[Servo_bottom,0],[small_servo_arm_3,0],
-                                           [small_servo_top,0],[small_servo_gripper,0]],dtype=np.int)
-
-            self.setServoAngle(Servo_bottom, theta_1_init)
-            self.setServoAngle(Servo_inner, theta_0_init)
-            self.setServoAngle(Servo_top, theta_2_init)
-            self.setServoAngle(small_servo_arm_3 , theta_arm_3)
 
     def angle_slow(self, pin, angle_target):
-
-        if (pin == Servo_top or pin == Servo_inner or pin == Servo_bottom):
-            rows, cols = np.where(self.control_array==pin)
-            start_angle = self.control_array[rows][0][1]
-            self.control_array[rows] = np.array([pin, angle_target])
+        """
+        :param pin: pin to write too
+        :param angle_target: angle to move too
+        :return: void
+        """
+        rows, cols = np.where(self.control_array==pin)
+        start_angle = self.control_array[rows][0][1]
+        self.control_array[rows] = np.array([pin, angle_target])
+        if (pin == Servo_inner or pin == Servo_bottom or [pin ==Servo_top]):
             if (start_angle < angle_target):
-                unit = int(abs(angle_target-start_angle)/10)
+                unit = 1
             else:
-                unit = -1*int(abs(angle_target-start_angle)/5)
-            for i in range(start_angle, angle_target + unit, unit):
+                unit = -1
+            for i in range(start_angle, angle_target, unit):
                 self.set_angle(pin, i, update=False)
-                time.sleep(.75)
+                time.sleep(.03)
         else:
             self.set_angle(pin, angle_target)
 
     def run_routine(self, routine):
+        """
+        :param routine: a list with pins and angle positions
+        :return: void
+        """
         print("Running Routine....")
-        time.sleep(2)
         for i in range(0, len(routine)):
             self.angle_slow(routine[i][0], routine[i][1])
-            time.sleep(2)
+            time.sleep(.4)
         print("Routine Ended")
 
+    def initialize(self):
+        """
+        runs a initializion sequence sets servos to 0 angle_s
+        :return: void
+        """
+        time.sleep(2)
+
+        board.digital[Servo_inner].mode = pyfirmata.SERVO
+        board.digital[Servo_bottom].mode = pyfirmata.SERVO
+        board.digital[Servo_top].mode = pyfirmata.SERVO
+        board.digital[small_servo_gripper].mode = pyfirmata.SERVO
+        board.digital[small_servo_arm_3].mode = pyfirmata.SERVO
+        board.digital[small_servo_top].mode = pyfirmata.SERVO
+
+        self.control_array = np.array([[Servo_inner,0],[Servo_top,0],[Servo_bottom,0],[small_servo_arm_3,0],
+                                       [small_servo_top,0],[small_servo_gripper,0]],dtype=np.int)
+
+        self.setServoAngle(Servo_bottom, theta_1_init)
+        self.setServoAngle(Servo_inner, theta_0_init)
+        self.setServoAngle(Servo_top, theta_2_init)
+        self.setServoAngle(small_servo_arm_3, theta_arm_3)
+
     def rest(self):
-        rest = [[Servo_bottom, -10] ,[Servo_top, 60]]
+        """
+        sets motors to rest position
+        :return: void
+        """
+        rest = [[Servo_inner, 0], [small_servo_arm_3, 70], [Servo_bottom, 30] ,[Servo_top, 70]]
         self.run_routine(rest)
 
     def basic_routine(self):
-        routine_1 = [[Servo_top,-10], [Servo_bottom,-10],
-                     [Servo_top,20], [small_servo_arm_3, 110], [small_servo_top, 90], [Servo_top, 50],
-                     [small_servo_arm_3, 60], [small_servo_arm_3, 100], [small_servo_top, 0],
-                     [small_servo_arm_3, 40], [Servo_top, 65]]
+        """
+        simple routine for testing
+        :return: void
+        """
+        routine_1 = [[Servo_inner, 120], [Servo_inner, 0], [Servo_top, -40],
+                     [Servo_top, 0], [small_servo_arm_3, 110],
+                     [small_servo_top, 90],[small_servo_arm_3, 30], [small_servo_top, 0],
+                     [Servo_top, 40], [small_servo_top, 90], [small_servo_arm_3, 100],
+                     [small_servo_top, 0],[Servo_top, 0], [small_servo_arm_3, 30],
+                     [Servo_inner, 90], [Servo_inner, 0]]
         self.run_routine(routine_1)
 
 
-
-
-# -------- Imp
+# -------- Implementation
 board = pyfirmata.Arduino('COM3')
 Chester = Chester(board)
 Chester.initialize()
+Chester.basic_routine()
 Chester.rest()
+
