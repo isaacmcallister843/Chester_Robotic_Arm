@@ -50,11 +50,3 @@ Future implementation for the sonar sensors will include the method "see"
 Chester.see()
 ```
 
-## Intellectual Property
-Chester_main was created by me and all work is original. The Chess AI is being developed with the help of various online tutorials and guides and most of the current posted work is a variation on other publically available projects. Pygame is not a package I am familiar with and this is a valuable learning experience. 
-
-
-
-
-
-
